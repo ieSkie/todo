@@ -8,6 +8,8 @@ type Task = {
   createdAt: number;
 };
 
+type Filter = "all" | "active" | "completed";
+
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
     const task = localStorage.getItem("task");
@@ -18,7 +20,13 @@ export default function App() {
     }
   });
   const [input, setInput] = useState("");
-  const listOfTasks = tasks.map((task) => {
+  const [filter, setFilter] = useState<Filter>("all");
+  const visibleTasks = tasks.filter((task) => {
+    if (filter === "active") return task.status === false;
+    if (filter === "completed") return task.status === true;
+    return true;
+  });
+  const listOfTasks = visibleTasks.map((task) => {
     return (
       <li key={task.id}>
         <input
@@ -79,21 +87,28 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
+      <div className="flex flex-row m-4 gap-4">
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("active")}>Active</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
+      </div>
       <ul>{listOfTasks}</ul>
-      <input
-        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-        type="text"
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-      ></input>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition ml-2"
-        onClick={addTask}
-      >
-        Добавить задачу
-      </button>
+      <div className="flex m-4">
+        <input
+          className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          type="text"
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+        ></input>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 m-5 rounded-md hover:bg-blue-600 transition ml-2"
+          onClick={addTask}
+        >
+          Добавить задачу
+        </button>
+      </div>
     </div>
   );
 }
