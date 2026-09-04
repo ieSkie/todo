@@ -1,5 +1,5 @@
 import "./index.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Task = {
   id: number;
@@ -9,9 +9,14 @@ type Task = {
 };
 
 export default function App() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, name: "Read a book", status: false, createdAt: 1 },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const task = localStorage.getItem("task");
+    if (task) {
+      return JSON.parse(task);
+    } else {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const listOfTasks = tasks.map((task) => {
     return (
@@ -66,6 +71,11 @@ export default function App() {
     });
     setTasks(result);
   }
+
+  useEffect(() => {
+    const task = JSON.stringify(tasks);
+    localStorage.setItem("task", task);
+  }, [tasks]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
