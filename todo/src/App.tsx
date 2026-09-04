@@ -1,14 +1,7 @@
 import "./index.css";
 import { useState, useEffect } from "react";
-
-type Task = {
-  id: number;
-  name: string;
-  status: boolean;
-  createdAt: number;
-};
-
-type Filter = "all" | "active" | "completed";
+import type { Task, Filter } from "./types";
+import TaskFilters from "./components/TaskFilters";
 
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -87,11 +80,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
-      <div className="flex flex-row m-4 gap-4">
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("active")}>Active</button>
-        <button onClick={() => setFilter("completed")}>Completed</button>
-      </div>
+      <TaskFilters filter={filter} setFilter={setFilter} />
       <ul>{listOfTasks}</ul>
       <div className="flex m-4">
         <input
