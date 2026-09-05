@@ -6,9 +6,10 @@ type TaskFormProps = {
 
 export default function TaskForm({ input, setInput, addTask }: TaskFormProps) {
   return (
-    <div className="flex m-4">
+    <div className="flex m-4 items-center">
       <input
-        className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="Type your task here..."
+        className="border border-gray-300 rounded-md px-3 py-2 flex-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
         type="text"
         value={input}
         onChange={(e) => {

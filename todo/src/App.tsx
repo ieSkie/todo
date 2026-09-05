@@ -15,33 +15,11 @@ export default function App() {
     }
   });
   const [input, setInput] = useState("");
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("All");
   const visibleTasks = tasks.filter((task) => {
-    if (filter === "active") return task.status === false;
-    if (filter === "completed") return task.status === true;
+    if (filter === "Active") return task.status === false;
+    if (filter === "Completed") return task.status === true;
     return true;
-  });
-  const listOfTasks = visibleTasks.map((task) => {
-    return (
-      <li key={task.id}>
-        <input
-          type="checkbox"
-          checked={task.status}
-          onChange={() => toggleStatus(task.id)}
-        ></input>
-        <span className={task.status ? "line-through text-gray-400" : ""}>
-          {task.name}
-        </span>
-        <button
-          className="text-red-500 hover:text-red-700 text-sm"
-          onClick={() => {
-            deleteItem(task.id);
-          }}
-        >
-          Удалить
-        </button>
-      </li>
-    );
   });
 
   function addTask() {
@@ -82,13 +60,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
-      <TaskFilters filter={filter} setFilter={setFilter} />
-      <TaskList
-        visibleTasks={visibleTasks}
-        toggleStatus={toggleStatus}
-        deleteItem={deleteItem}
-      />
-      <TaskForm input={input} setInput={setInput} addTask={addTask} />
+      <div className="w-full max-w-xl">
+        <h1 className="text-4xl font-bold text-center mb-8">My tasks</h1>
+        <TaskForm input={input} setInput={setInput} addTask={addTask} />
+        <TaskFilters filter={filter} setFilter={setFilter} />
+        <TaskList
+          visibleTasks={visibleTasks}
+          toggleStatus={toggleStatus}
+          deleteItem={deleteItem}
+        />
+      </div>
     </div>
   );
 }
