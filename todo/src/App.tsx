@@ -2,6 +2,8 @@ import "./index.css";
 import { useState, useEffect } from "react";
 import type { Task, Filter } from "./types";
 import TaskFilters from "./components/TaskFilters";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
 
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -81,23 +83,12 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
       <TaskFilters filter={filter} setFilter={setFilter} />
-      <ul>{listOfTasks}</ul>
-      <div className="flex m-4">
-        <input
-          className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-          type="text"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-        ></input>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 m-5 rounded-md hover:bg-blue-600 transition ml-2"
-          onClick={addTask}
-        >
-          Добавить задачу
-        </button>
-      </div>
+      <TaskList
+        visibleTasks={visibleTasks}
+        toggleStatus={toggleStatus}
+        deleteItem={deleteItem}
+      />
+      <TaskForm input={input} setInput={setInput} addTask={addTask} />
     </div>
   );
 }
