@@ -1,54 +1,34 @@
 import "./index.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { type ITask, EFilter } from "./types";
 import TaskFilters from "./components/TaskFilters";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+import { taskService } from "./services/taskService";
+const { getTasks, addTask, toggleTaskStatus, deleteTask, saveTasks } =
+  taskService;
 
 export default function App() {
-  const [tasks, setTasks] = useState<ITask[]>(() => {
-    const task = localStorage.getItem("task");
-    if (task) {
-      return JSON.parse(task);
-    } else {
-      return [];
-    }
-  });
+  const [tasks, setTasks] = useState<ITask[]>(() => getTasks());
   const [filter, setFilter] = useState<EFilter>(EFilter.All);
 
   const onAddTask = (name: string) => {
-    const copy = [...tasks];
-    const obj = {
-      id: Date.now(),
-      name: name,
-      isCompleted: false,
-      createdAt: Date.now(),
-    };
-    copy.push(obj);
-    setTasks(copy);
+    const updated = addTask(tasks, name);
+    setTasks(updated);
+    saveTasks(updated);
   };
 
   const onDeleteTask = (id: number) => {
-    const result = tasks.filter((task) => {
-      return task.id != id;
-    });
-    setTasks(result);
+    const updated = deleteTask(tasks, id);
+    setTasks(updated);
+    saveTasks(updated);
   };
 
   const onStatusToggle = (id: number) => {
-    const result = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, status: !task.isCompleted };
-      }
-      return task;
-    });
-    setTasks(result);
+    const updated = toggleTaskStatus(tasks, id);
+    setTasks(updated);
+    saveTasks(updated);
   };
-
-  useEffect(() => {
-    const task = JSON.stringify(tasks);
-    localStorage.setItem("task", task);
-  }, [tasks]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-16 px-4">
