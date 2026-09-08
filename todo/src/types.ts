@@ -1,8 +1,11 @@
-export type Task = {
+export interface ITask {
   id: number;
   name: string;
-  status: boolean;
+  isCompleted: boolean;
   createdAt: number;
-};
-
-export type Filter = "All" | "Active" | "Completed";
+}
+export enum EFilter {
+  All = "All",
+  Active = "Active",
+  Completed = "Completed",
+}
