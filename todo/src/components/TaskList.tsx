@@ -5,6 +5,7 @@ type TaskListProps = {
   filter: EFilter;
   onToggleStatus: (id: number) => void;
   onDeleteItem: (id: number) => void;
+  searchQuery: string;
 };
 
 export default function TaskList({
@@ -12,11 +13,18 @@ export default function TaskList({
   filter,
   onToggleStatus,
   onDeleteItem,
+  searchQuery,
 }: TaskListProps) {
   const visibleTasks = tasks.filter((task) => {
-    if (filter === EFilter.Active) return task.isCompleted === false;
-    if (filter === EFilter.Completed) return task.isCompleted === true;
-    return true;
+    const matchesSearch = task.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    if (filter === EFilter.Active)
+      return task.isCompleted === false && matchesSearch;
+    if (filter === EFilter.Completed)
+      return task.isCompleted === true && matchesSearch;
+    return matchesSearch;
   });
   const listOfTasks = visibleTasks.map((task) => {
     return (

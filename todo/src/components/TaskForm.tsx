@@ -20,9 +20,12 @@ export default function TaskForm({ onAddTask }: TaskFormProps) {
         onChange={(e) => {
           setAddTaskInputValue(e.target.value);
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleAddClick();
+        }}
       ></input>
       <button
-        className="bg-blue-500 text-white px-4 py-2 m-5 rounded-md hover:bg-blue-600 transition ml-2"
+        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition ml-2"
         onClick={handleAddClick}
       >
         Добавить задачу

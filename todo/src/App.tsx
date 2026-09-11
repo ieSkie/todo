@@ -4,6 +4,7 @@ import { type ITask, EFilter } from "./types";
 import TaskFilters from "./components/TaskFilters";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+import TaskSearch from "./components/TaskSearch";
 import { taskService } from "./services/taskService";
 const { getTasks, addTask, toggleTaskStatus, deleteTask, saveTasks } =
   taskService;
@@ -12,6 +13,7 @@ export default function App() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [filter, setFilter] = useState<EFilter>(EFilter.All);
   const [areTasksLoading, setAreTasksLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const onAddTask = useCallback(
     (name: string) => {
       const updated = addTask(tasks, name);
@@ -59,12 +61,17 @@ export default function App() {
         ) : (
           <>
             <TaskForm onAddTask={onAddTask} />
+            <TaskSearch
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
             <TaskFilters filter={filter} setFilter={setFilter} />
             <TaskList
               tasks={tasks}
               filter={filter}
               onToggleStatus={onStatusToggle}
               onDeleteItem={onDeleteTask}
+              searchQuery={searchQuery}
             />
           </>
         )}
