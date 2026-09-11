@@ -1,20 +1,24 @@
 import { type ITask } from "../types";
 
 export const taskService = {
-  getTasks(): ITask[] {
-    try {
-      const task = localStorage.getItem("task");
-      if (task) {
-        return JSON.parse(task);
-      } else {
-        return [];
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(e.message);
-      }
-      return [];
-    }
+  async getTasks(): Promise<ITask[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        try {
+          const task = localStorage.getItem("task");
+          if (task) {
+            resolve(JSON.parse(task));
+          } else {
+            resolve([]);
+          }
+        } catch (e) {
+          if (e instanceof Error) {
+            console.log(e.message);
+          }
+          resolve([]);
+        }
+      }, 2000);
+    });
   },
 
   addTask(tasks: ITask[], name: string): ITask[] {
