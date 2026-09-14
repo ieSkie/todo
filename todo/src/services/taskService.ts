@@ -21,7 +21,7 @@ export const taskService = {
     });
   },
 
-  addTask(tasks: ITask[], name: string): ITask[] {
+  addTask: (tasks: ITask[], name: string): ITask[] => {
     const obj: ITask = {
       id: Date.now(),
       name: name,
@@ -31,17 +31,17 @@ export const taskService = {
     return [...tasks, obj];
   },
 
-  deleteTask(tasks: ITask[], id: number): ITask[] {
+  deleteTask: (tasks: ITask[], id: number): ITask[] => {
     return tasks.filter((task) => task.id !== id);
   },
 
-  toggleTaskStatus(tasks: ITask[], id: number): ITask[] {
+  toggleTaskStatus: (tasks: ITask[], id: number): ITask[] => {
     return tasks.map((task) =>
       task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
     );
   },
 
-  saveTasks(tasks: ITask[]) {
+  saveTasks: (tasks: ITask[]) => {
     const task = JSON.stringify(tasks);
     localStorage.setItem("task", task);
   },

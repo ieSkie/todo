@@ -6,8 +6,6 @@ import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import TaskSearch from "./components/TaskSearch";
 import { taskService } from "./services/taskService";
-const { getTasks, addTask, toggleTaskStatus, deleteTask, saveTasks } =
-  taskService;
 
 export default function App() {
   const [tasks, setTasks] = useState<ITask[]>([]);
@@ -16,34 +14,34 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const onAddTask = useCallback(
     (name: string) => {
-      const updated = addTask(tasks, name);
+      const updated = taskService.addTask(tasks, name);
       setTasks(updated);
-      saveTasks(updated);
+      taskService.saveTasks(updated);
     },
     [tasks],
   );
 
   const onDeleteTask = useCallback(
     (id: number) => {
-      const updated = deleteTask(tasks, id);
+      const updated = taskService.deleteTask(tasks, id);
       setTasks(updated);
-      saveTasks(updated);
+      taskService.saveTasks(updated);
     },
     [tasks],
   );
 
   const onStatusToggle = useCallback(
     (id: number) => {
-      const updated = toggleTaskStatus(tasks, id);
+      const updated = taskService.toggleTaskStatus(tasks, id);
       setTasks(updated);
-      saveTasks(updated);
+      taskService.saveTasks(updated);
     },
     [tasks],
   );
 
   useEffect(() => {
     async function loadTasks() {
-      const loadedTasks = await getTasks();
+      const loadedTasks = await taskService.getTasks();
       setTasks(loadedTasks);
       setAreTasksLoading(false);
     }
